@@ -11,6 +11,7 @@ import Solutions from "./pages/Solutions";
 import Guides from "./pages/Guides";
 import Community from "./pages/Community";
 import FarmerDashboard from "./pages/FarmerDashboard";
+import AdminUpload from "./pages/AdminUpload";
 import MarketPlace from "./pages/MarketPlace";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/Signin";
@@ -75,6 +76,7 @@ function App() {
           <Route path="/guides" element={<Guides />} />
           <Route path="/community" element={<Community />} />
           <Route path="/dashboard" element={<FarmerDashboard />} />
+          <Route path="/admin-upload" element={<AdminUpload />} />
           <Route path="/market-place" element={<MarketPlace />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />

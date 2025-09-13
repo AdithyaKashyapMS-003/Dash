@@ -1,6 +1,5 @@
-
 // Navbar.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FaLeaf, FaSeedling } from "react-icons/fa";
@@ -8,14 +7,38 @@ import { useTranslation } from "react-i18next";
 
 function Navbar() {
   const { isSignedIn } = useAuth();
-    const { t } = useTranslation();
-  const { i18n } = useTranslation();
-    const handleLanguageChange = (e) => {
-      i18n.changeLanguage(e.target.value);
+  const { t, i18n } = useTranslation();
+
+  const [show, setShow] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Scroll listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        // scrolling down
+        setShow(false);
+      } else {
+        // scrolling up
+        setShow(true);
+      }
+      setLastScrollY(window.scrollY);
     };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  const handleLanguageChange = (e) => {
+    i18n.changeLanguage(e.target.value);
+  };
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-green-100 border-b-2 border-green-300 shadow-lg">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 bg-green-100 border-b-2 border-green-300 shadow-lg transition-transform duration-300 ${
+        show ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="flex justify-between items-center py-4 px-6 sm:px-8 lg:px-12">
         {/* Left-side: Logo + Dashboard/Market */}
         <div className="flex items-center space-x-6">
@@ -41,7 +64,15 @@ function Navbar() {
           >
             {t("nav_market_place")}
           </Link>
+          <Link
+            className="text-green-700 font-medium hover:text-green-900 transition"
+            to="/admin-upload"
+          >
+            Admin Upload
+          </Link>
         </div>
+
+        {/* Language Selector */}
         <div>
           <select
             onChange={handleLanguageChange}
